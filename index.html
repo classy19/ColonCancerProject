@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التحليل الاستكشافي للجينات المرشحة كأهداف علاجية لسرطان القولون — لمى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  /* ألوان مأخوذة من الصورة */
+  --sand:#EBDBCC;      /* خلفية الأعلى */
+  --cream:#FFF6E3;     /* توهّج الأقمار */
+  --glow:#FFF1C6;
+  --peri:#8992BD;      /* أزرق مائل للبنفسجي */
+  --blue:#5B6CA4;
+  --indigo:#4A5688;
+  --night:#262C57;
+  --coral:#DC897B;     /* بشرة الوجه */
+  --coral-d:#C4665A;
+  --brown:#7D504A;     /* الشعر */
+  --ink:#2A2F5C;
+  --radius:28px;
+  --head:'Readex Pro','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --body:'IBM Plex Sans Arabic','Readex Pro',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);color:var(--ink);background:var(--cream);
+  line-height:1.95;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+/* حبيبات خفيفة مثل ملمس الصورة */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.n,.g{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.g{font-family:var(--head);font-weight:600;letter-spacing:.02em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--head);line-height:1.35}
+h2{font-size:clamp(28px,5.4vw,46px);font-weight:700;margin-bottom:14px}
+h3{font-size:20px;font-weight:600}
+p{max-width:62ch}
+section{padding:84px 0;position:relative}
+.eyebrow{
+  display:inline-block;font-family:var(--head);font-size:13px;font-weight:600;letter-spacing:.04em;
+  padding:6px 16px;border-radius:99px;background:rgba(255,246,227,.7);color:var(--indigo);margin-bottom:18px;
+  border:1px solid rgba(74,86,136,.2)
+}
+.lead{font-size:clamp(18px,2.6vw,22px);opacity:.92}
+
+/* ---------- Hero ---------- */
+.hero{
+  min-height:100svh;padding:70px 0 0;display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,var(--sand) 0%,#D9D2D6 28%,#A9AED0 58%,var(--indigo) 100%);
+}
+.hero .wrap{flex:1;display:flex;flex-direction:column;justify-content:flex-start}
+.hero h1{font-size:clamp(38px,8.4vw,86px);font-weight:700;color:var(--night);letter-spacing:-.01em;max-width:14ch}
+.hero h1 em{font-style:normal;color:var(--coral-d);position:relative;white-space:nowrap}
+.hero h1 em::after{
+  content:"";position:absolute;inset:auto 0 .06em 0;height:.28em;background:var(--glow);z-index:-1;border-radius:99px;opacity:.9
+}
+.hero .sub{margin-top:26px;font-size:clamp(17px,2.4vw,21px);color:var(--night);max-width:46ch;opacity:.85}
+.hero .tag{margin-top:30px;display:flex;gap:10px;flex-wrap:wrap}
+.chip{
+  font-size:14px;padding:7px 16px;border-radius:99px;background:var(--night);color:var(--cream);font-weight:500
+}
+.chip.soft{background:rgba(255,246,227,.75);color:var(--night)}
+.moons{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:2px;
+  padding:60px 22px 56px;max-width:1100px;margin:0 auto;width:100%
+}
+.moon{
+  --s:44px;--shift:0%;--y:0px;
+  width:var(--s);height:var(--s);border-radius:50%;position:relative;overflow:hidden;flex:none;
+  background:var(--glow);transform:translateY(var(--y));
+  box-shadow:0 0 34px 8px rgba(255,241,198,.55);
+  animation:float 7s ease-in-out infinite;animation-delay:var(--d,0s)
+}
+.moon::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,#8E98CB,#4B5890 78%);
+  transform:translateX(var(--shift))
+}
+@keyframes float{50%{transform:translateY(calc(var(--y) - 12px))}}
+.moons-cap{text-align:center;color:var(--cream);font-size:14px;opacity:.85;padding-bottom:26px;margin-top:-30px}
+
+/* ---------- Sections ---------- */
+.s-cream{background:var(--cream)}
+.s-sand{background:var(--sand)}
+.s-blue{background:var(--indigo);color:var(--cream)}
+.s-blue .eyebrow{background:rgba(255,246,227,.12);color:var(--glow);border-color:rgba(255,246,227,.25)}
+.s-night{background:var(--night);color:var(--cream)}
+.s-night .eyebrow{background:rgba(255,246,227,.1);color:var(--glow);border-color:rgba(255,246,227,.22)}
+
+/* خلاصة */
+.tldr{
+  background:var(--night);color:var(--cream);border-radius:36px;padding:clamp(28px,5vw,56px);
+  position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgba(38,44,87,.55)
+}
+.tldr::before{
+  content:"";position:absolute;width:320px;height:320px;border-radius:50%;left:-90px;top:-110px;
+  background:radial-gradient(circle,rgba(255,241,198,.55),rgba(255,241,198,0) 68%)
+}
+.tldr .big{font-family:var(--head);font-weight:600;font-size:clamp(22px,4.2vw,34px);line-height:1.7;position:relative}
+.tldr .big mark{background:none;color:var(--glow);border-bottom:3px solid var(--coral)}
+.pills{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:30px;position:relative}
+.pill{background:rgba(255,246,227,.09);border:1px solid rgba(255,246,227,.18);border-radius:20px;padding:18px 20px;font-size:16px;line-height:1.8}
+.pill b{display:block;color:var(--glow);font-family:var(--head);font-size:15px;margin-bottom:2px}
+
+/* مفاهيم */
+.grid{display:grid;gap:18px;margin-top:38px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(285px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{
+  background:#fff9ee;border-radius:var(--radius);padding:28px 26px;position:relative;
+  border:1px solid rgba(74,86,136,.14);transition:transform .35s,box-shadow .35s
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 22px 40px -22px rgba(74,86,136,.5)}
+.card .ic{
+  width:48px;height:48px;border-radius:50%;margin-bottom:16px;position:relative;overflow:hidden;background:var(--glow);
+  box-shadow:0 0 22px 4px rgba(255,241,198,.8)
+}
+.card .ic::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#8E98CB,#4B5890 80%);transform:translateX(var(--sh,40%))}
+.card h3{margin-bottom:6px;color:var(--night)}
+.card p{font-size:16px;opacity:.9}
+.card .ex{
+  margin-top:12px;padding:10px 14px;border-radius:14px;background:rgba(220,137,123,.16);font-size:15px;color:var(--brown)
+}
+
+/* مثال المطاعم */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}
+.duo .side{border-radius:var(--radius);padding:30px 26px}
+.duo .a{background:linear-gradient(160deg,#FFF1C6,#F6D3B8)}
+.duo .b{background:linear-gradient(160deg,var(--peri),var(--blue));color:#fff}
+.duo h3{margin-bottom:8px;font-size:22px}
+.duo .a h3{color:var(--brown)}
+.duo .big-n{font-family:var(--head);font-size:56px;font-weight:700;line-height:1;margin-bottom:10px;opacity:.9}
+.eq{margin-top:26px;font-family:var(--head);font-weight:600;font-size:clamp(18px,3vw,24px);text-align:center;color:var(--night);padding:22px;border-radius:24px;border:2px dashed var(--coral)}
+@media(max-width:700px){.duo{grid-template-columns:1fr}}
+
+/* خطوات */
+.steps{margin-top:40px;display:grid;gap:0;position:relative}
+.step{display:grid;grid-template-columns:64px 1fr;gap:20px;padding-bottom:34px;position:relative}
+.step:not(:last-child)::before{
+  content:"";position:absolute;right:31px;top:64px;bottom:0;width:2px;background:linear-gradient(var(--glow),rgba(255,241,198,.1))
+}
+.num{
+  width:64px;height:64px;border-radius:50%;background:var(--glow);color:var(--night);display:grid;place-items:center;
+  font-family:var(--head);font-weight:700;font-size:24px;box-shadow:0 0 30px 6px rgba(255,241,198,.35)
+}
+.step h3{color:var(--glow);margin-bottom:4px;font-size:22px}
+.step p{opacity:.92}
+.checks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.ck{font-size:14px;background:rgba(255,246,227,.12);border:1px solid rgba(255,246,227,.25);padding:6px 14px;border-radius:99px}
+.ck b{color:var(--glow)}
+
+/* أرقام */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:38px}
+.tile{border-radius:var(--radius);padding:26px 24px;background:#fff9ee;border:1px solid rgba(74,86,136,.14)}
+.tile:nth-child(1){background:var(--glow)}
+.tile:nth-child(2){background:var(--peri);color:#fff}
+.tile:nth-child(3){background:var(--coral);color:#fff}
+.tile:nth-child(4){background:var(--night);color:var(--cream)}
+.tile .v{font-family:var(--head);font-weight:700;font-size:clamp(34px,5.4vw,50px);line-height:1.15}
+.tile .t{font-weight:600;margin-top:6px;font-family:var(--head);font-size:16px}
+.tile .d{font-size:15px;opacity:.92;margin-top:6px;line-height:1.75}
+
+.panel{background:#fff9ee;border-radius:36px;padding:clamp(24px,4vw,44px);margin-top:34px;border:1px solid rgba(74,86,136,.14)}
+.panel h3{font-size:24px;margin-bottom:6px;color:var(--night)}
+.panel .cap{font-size:15.5px;opacity:.85;margin-bottom:22px}
+
+/* مخطط الأعمدة */
+.bars{display:grid;gap:9px}
+.row{
+  display:grid;grid-template-columns:86px 1fr 44px;align-items:center;gap:12px;cursor:pointer;padding:5px 8px;border-radius:14px;
+  transition:background .2s;border:0;background:none;font:inherit;color:inherit;text-align:start;width:100%
+}
+.row:hover,.row.on{background:rgba(137,146,189,.2)}
+.row .lbl{font-size:14.5px;text-align:start}
+.track{display:block;height:22px;border-radius:99px;background:rgba(137,146,189,.18);overflow:hidden}
+.fill{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(270deg,var(--coral),#EBA597);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.row.hl .fill{background:linear-gradient(270deg,var(--indigo),var(--peri))}
+.row .val{font-family:var(--head);font-weight:600;font-size:15px;text-align:start}
+.detail{
+  margin-top:20px;padding:18px 22px;border-radius:20px;background:var(--night);color:var(--cream);min-height:86px;font-size:16px;line-height:1.85
+}
+.detail b{color:var(--glow)}
+.note{font-size:13.5px;opacity:.7;margin-top:14px;line-height:1.8}
+
+/* مقياس الارتباط */
+.meter{margin:34px 6px 8px;direction:ltr}
+.mbar{height:18px;border-radius:99px;background:linear-gradient(90deg,var(--blue),#C9C6DC 50%,var(--coral));position:relative}
+.mbar::after{content:"";position:absolute;left:50%;top:-8px;bottom:-8px;width:2px;background:var(--night);opacity:.45}
+.pin{
+  position:absolute;top:50%;left:calc(50% + (-0.131 * 50%));transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;
+  background:var(--glow);box-shadow:0 0 0 5px var(--night),0 0 28px 8px rgba(255,241,198,.8);transition:left 1.4s cubic-bezier(.2,.8,.2,1)
+}
+.mlabels{display:flex;justify-content:space-between;margin-top:18px;font-size:13.5px;gap:6px;direction:rtl}
+.mlabels span{flex:1;text-align:center;line-height:1.6}
+.mlabels .l{text-align:right}.mlabels .r{text-align:left}
+.mnums{display:flex;justify-content:space-between;font-family:var(--head);font-weight:600;font-size:14px;margin-top:10px}
+
+/* نجوم */
+.stars{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;margin-top:38px}
+.star{border-radius:var(--radius);padding:30px 26px;position:relative;overflow:hidden}
+.star.s1{background:var(--glow);color:var(--night)}
+.star.s2{background:var(--blue);color:#fff}
+.star.s3{background:var(--coral);color:#fff}
+.star .gn{font-family:var(--head);font-weight:700;font-size:34px;direction:ltr;display:inline-block}
+.star .kicker{font-size:13.5px;font-weight:600;letter-spacing:.03em;opacity:.8;display:block;margin-bottom:6px}
+.star .two{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+.star .two div{background:rgba(255,255,255,.2);border-radius:16px;padding:10px 16px;font-size:14px;line-height:1.5}
+.star.s1 .two div{background:rgba(38,44,87,.09)}
+.star .two b{display:block;font-family:var(--head);font-size:24px}
+.star p{font-size:16px}
+.star .verdict{margin-top:14px;font-weight:600;font-family:var(--head);font-size:16px;padding-top:14px;border-top:1px solid currentColor;border-color:rgba(255,255,255,.35)}
+.star.s1 .verdict{border-color:rgba(38,44,87,.25)}
+
+/* نعم/لا */
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}
+.yn>div{border-radius:var(--radius);padding:30px 28px}
+.yes{background:rgba(255,246,227,.1);border:1px solid rgba(255,246,227,.25)}
+.no{background:var(--coral);color:#fff}
+.yn h3{font-size:22px;margin-bottom:14px}
+.yes h3{color:var(--glow)}
+.yn ul{list-style:none;display:grid;gap:12px}
+.yn li{padding-right:30px;position:relative;font-size:16px;line-height:1.85}
+.yn li::before{content:"";position:absolute;right:0;top:.62em;width:16px;height:16px;border-radius:50%;background:var(--glow);box-shadow:0 0 12px 2px rgba(255,241,198,.7)}
+.no li::before{background:var(--night);box-shadow:none}
+@media(max-width:700px){.yn{grid-template-columns:1fr}}
+
+/* فوائد */
+.use{counter-reset:u}
+.use .card::before{
+  counter-increment:u;content:counter(u);position:absolute;left:22px;top:12px;font-family:var(--head);font-weight:700;font-size:64px;color:rgba(137,146,189,.28);line-height:1
+}
+
+/* توصيات */
+.recs{display:grid;gap:14px;margin-top:36px;counter-reset:r}
+.rec{
+  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;background:rgba(255,246,227,.09);
+  border:1px solid rgba(255,246,227,.2);padding:22px 24px;border-radius:24px
+}
+.rec::before{
+  counter-increment:r;content:counter(r);width:42px;height:42px;border-radius:50%;background:var(--glow);color:var(--night);
+  display:grid;place-items:center;font-family:var(--head);font-weight:700
+}
+.rec h3{color:var(--glow);font-size:19px;margin-bottom:2px}
+.rec p{font-size:16px;opacity:.92}
+
+footer{background:var(--night);color:var(--cream);padding:60px 0 70px;text-align:center}
+footer p{margin:0 auto 12px;font-size:15px;opacity:.85}
+footer a{color:var(--glow);word-break:break-all}
+.disc{display:inline-block;margin-top:18px;padding:12px 22px;border-radius:18px;background:rgba(255,246,227,.1);font-size:14px}
+
+/* ظهور تدريجي */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+.no-js .reveal{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}.moon{animation:none}.fill,.pin{transition:none}html{scroll-behavior:auto}
+}
+@media(max-width:560px){
+  body{font-size:16.5px}section{padding:64px 0}
+  .row{grid-template-columns:70px 1fr 34px;gap:8px}
+  .moons{padding:40px 14px 44px}
+  .step{grid-template-columns:50px 1fr;gap:14px}.num{width:50px;height:50px;font-size:20px}.step:not(:last-child)::before{right:24px;top:50px}
+}
+
+
+/* ===== إضافات خاصة بالتقرير ===== */
+.hero .eyebrow{align-self:flex-start}
+.hero h1{max-width:none;font-size:clamp(32px,6.4vw,66px);line-height:1.3}
+.hero .en{font-family:var(--head);direction:ltr;text-align:right;margin-top:18px;font-size:clamp(14px,2vw,18px);color:var(--night);opacity:.7;max-width:46ch;line-height:1.6}
+.byline{margin-top:30px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.byline .who{font-family:var(--head);font-weight:700;font-size:22px;color:var(--night)}
+.byline .who small{display:block;font-weight:400;font-size:14px;opacity:.75;margin-top:2px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.toc a{font-size:14px;text-decoration:none;color:var(--night);background:rgba(255,246,227,.7);padding:6px 14px;border-radius:99px;border:1px solid rgba(74,86,136,.2);transition:background .2s}
+.toc a:hover{background:var(--glow)}
+.sec-n{font-family:var(--head);font-weight:700;color:var(--coral-d);margin-inline-start:10px}
+.s-blue .sec-n,.s-night .sec-n{color:var(--glow)}
+.tablewrap{color:var(--ink);overflow-x:auto;border-radius:24px;border:1px solid rgba(74,86,136,.18);background:#fff9ee;margin-top:28px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+table.wide{min-width:640px}
+th,td{padding:12px 16px;text-align:start;border-bottom:1px solid rgba(74,86,136,.12)}
+td.n,td.g{display:table-cell;white-space:nowrap}
+th{font-family:var(--head);font-weight:600;font-size:14px;background:var(--night);color:var(--cream)}
+tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even){background:rgba(137,146,189,.09)}
+td.wrapc{white-space:normal;min-width:190px;line-height:1.7}
+.badge{display:inline-block;font-size:12.5px;padding:2px 10px;border-radius:99px;background:rgba(137,146,189,.25);margin:2px 0 2px 4px;white-space:nowrap}
+.badge.hot{background:rgba(220,137,123,.3)}
+tr.hl td{background:rgba(255,241,198,.7)}
+.small{font-size:14px;opacity:.78}
+.callout{margin-top:26px;padding:22px 26px;border-radius:24px;background:var(--glow);color:var(--night);font-size:16.5px;line-height:1.9}
+.callout b{font-family:var(--head)}
+.s-blue .callout,.s-night .callout{background:rgba(255,246,227,.12);color:var(--cream);border:1px solid rgba(255,246,227,.25)}
+.s-blue .callout b,.s-night .callout b{color:var(--glow)}
+.ans{border-radius:var(--radius);padding:26px 26px;background:#fff9ee;border:1px solid rgba(74,86,136,.14);margin-top:16px}
+.ans h3{color:var(--night);font-size:18px;margin-bottom:6px}
+.ans .q{display:inline-block;font-family:var(--head);font-weight:700;background:var(--night);color:var(--glow);border-radius:99px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.ans p{font-size:16px}
+.ans b.n{font-family:var(--head)}
+.code-box{margin-top:24px;border-radius:24px;overflow:hidden;background:#1b2045;color:#EBDBCC}
+.code-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#14183a;font-family:var(--head);font-size:13px}
+.code-bar button{font:inherit;cursor:pointer;border:0;border-radius:99px;padding:6px 16px;background:var(--glow);color:var(--night);font-weight:600}
+pre{direction:ltr;text-align:left;padding:20px;overflow:auto;max-height:520px;font-size:13px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+details summary{cursor:pointer;font-family:var(--head);font-weight:600;font-size:18px;padding:16px 22px;border-radius:20px;background:var(--night);color:var(--cream);list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";float:left;font-size:22px;line-height:1}
+details[open] summary::after{content:"−"}
+svg text{font-family:'Readex Pro','IBM Plex Sans Arabic',sans-serif}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;margin-top:14px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-inline-end:6px;vertical-align:-2px}
+.refs li{margin-bottom:10px;font-size:15px}
+.gl-head{margin-top:34px;font-family:var(--head);font-size:21px;color:var(--night)}
+.gl-sub{font-size:15.5px;opacity:.8;margin-top:2px}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:18px}
+.gl{background:#fff9ee;border-radius:24px;padding:22px 22px;border:1px solid rgba(74,86,136,.14)}
+.gl b.t{font-family:var(--head);color:var(--night);font-size:17px;display:block;margin-bottom:6px}
+.gl p{font-size:15.5px;line-height:1.9;margin-bottom:10px;max-width:none}
+.gl .here{display:block;font-size:14.5px;background:rgba(220,137,123,.17);color:var(--brown);padding:9px 14px;border-radius:14px;line-height:1.8}
+.gl .eg{display:block;font-size:14.5px;background:rgba(137,146,189,.2);padding:9px 14px;border-radius:14px;line-height:1.8;margin-bottom:10px}
+.final{background:linear-gradient(180deg,var(--night) 0%,var(--indigo) 100%);color:var(--cream);overflow:hidden}
+.final .eyebrow{background:rgba(255,246,227,.12);color:var(--glow);border-color:rgba(255,246,227,.25)}
+.final .sec-n{color:var(--glow)}
+.final .big-line{margin-top:36px;text-align:center;font-family:var(--head);font-weight:700;font-size:clamp(24px,5vw,44px);line-height:1.6;color:var(--glow)}
+.final .big-line small{display:block;font-weight:400;font-size:clamp(15px,2.2vw,18px);color:var(--cream);opacity:.85;margin-top:10px;font-family:var(--body);line-height:1.9}
+.final h3.sub{margin-top:44px;font-size:24px;color:var(--glow)}
+.final .card{background:rgba(255,246,227,.08);border-color:rgba(255,246,227,.22);color:var(--cream)}
+.final .card h3{color:var(--glow)}
+.final .card .ex{background:rgba(255,241,198,.14);color:var(--cream)}
+.final .card:hover{box-shadow:0 22px 40px -22px rgba(0,0,0,.6)}
+.final .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.final .pair div{border-radius:16px;padding:10px 14px;font-size:14.5px;line-height:1.7}
+.final .pair .a{background:rgba(255,241,198,.16)}.final .pair .b{background:rgba(220,137,123,.28)}
+.final .pair b{display:block;font-family:var(--head);font-size:20px}
+.final .pts{list-style:none;display:grid;gap:12px;margin-top:20px}
+.final .pts li{padding-right:30px;position:relative;font-size:17px;line-height:1.9}
+.final .pts li::before{content:"";position:absolute;right:0;top:.65em;width:16px;height:16px;border-radius:50%;background:var(--glow);box-shadow:0 0 12px 2px rgba(255,241,198,.7)}
+.defbox{margin-top:30px;border-radius:32px;background:#fff9ee;color:var(--ink);padding:clamp(24px,4vw,40px);border:2px solid var(--glow);box-shadow:0 0 0 6px rgba(255,241,198,.18)}
+.defbox h3{font-size:clamp(21px,3.4vw,27px);color:var(--night);margin-bottom:12px}
+.defbox p{font-size:16.5px;max-width:none;margin-bottom:12px}
+.defbox .trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+.defbox .trio div{border-radius:22px;padding:18px 20px;font-size:15.5px;line-height:1.85}
+.defbox .t1{background:var(--glow)}.defbox .t2{background:var(--coral);color:#fff}.defbox .t3{background:rgba(137,146,189,.25)}
+.defbox .trio b{display:block;font-family:var(--head);margin-bottom:4px}
+.refs a{direction:ltr;unicode-bidi:isolate;display:inline-block;word-break:break-all}
+@media(max-width:560px){th,td{padding:10px 12px;font-size:14px}.hero h1{font-size:clamp(28px,8vw,40px)}}
+</style>
+</head>
+<body class="no-js">
+
+<!-- ================= الغلاف ================= -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">مشروع لمى · المعلوماتية الحيوية</span>
+    <h1>التحليل الاستكشافي للجينات المرشحة كأهداف علاجية <em>لسرطان القولون</em></h1>
+    <p class="en">Exploratory Analysis of Potential Therapeutic Gene Targets in Colon Cancer</p>
+    <p class="sub">المشروع النهائي: دمج علوم البيانات بالمعلومات الحيوية، باستخدام بيانات من دراسة OncoRTT التي شارك فيها باحثون من جامعة الملك عبدالله للعلوم والتقنية (KAUST).</p>
+    <div class="byline"><div class="who">لمى<small>إعداد وتحليل</small></div></div>
+    <nav class="toc" aria-label="فهرس التقرير">
+      <a href="#abstract">نبذة</a><a href="#problem">المشكلة</a><a href="#data">البيانات</a><a href="#cleaning">الجودة</a><a href="#stats">التحليل</a><a href="#answers">النتائج</a><a href="#limits">الحدود</a><a href="#recs">التوصيات</a><a href="#refs">المراجع والكود</a><a href="#summary">الخلاصة</a>
+    </nav>
+  </div>
+  <div class="moons" aria-hidden="true">
+    <div class="moon" style="--s:30px;--shift:62%;--y:-6px;--d:0s"></div>
+    <div class="moon" style="--s:46px;--shift:20%;--y:-34px;--d:.6s"></div>
+    <div class="moon" style="--s:38px;--shift:-52%;--y:-8px;--d:1.1s"></div>
+    <div class="moon" style="--s:58px;--shift:34%;--y:-44px;--d:1.7s"></div>
+    <div class="moon" style="--s:44px;--shift:70%;--y:-14px;--d:2.2s"></div>
+    <div class="moon" style="--s:54px;--shift:8%;--y:-52px;--d:2.8s"></div>
+    <div class="moon" style="--s:36px;--shift:-30%;--y:-18px;--d:3.3s"></div>
+    <div class="moon" style="--s:60px;--shift:48%;--y:-38px;--d:3.9s"></div>
+    <div class="moon" style="--s:40px;--shift:-66%;--y:-10px;--d:4.4s"></div>
+    <div class="moon" style="--s:28px;--shift:26%;--y:-28px;--d:5s"></div>
+  </div>
+  <p class="moons-cap">كل قمر = جين من الجينات العشرة</p>
+</header>
+
+<!-- ================= 1 نبذة ================= -->
+<section class="s-cream" id="abstract">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">نبذة مختصرة</span>
+      <h2><span class="sec-n n">01</span>ملخص المشروع</h2>
+    </div>
+    <div class="tldr reveal" style="margin-top:20px">
+      <p class="big">يحلل المشروع عشرة جينات رشّحها نموذج <bdi class="g">OncoRTT</bdi> كأهداف علاجية محتملة لسرطان القولون، ويسأل: هل ترتيب الجينات حسب <mark>درجة التنبؤ الحاسوبي</mark> هو نفسه ترتيبها حسب <mark>عدد الأدلة المسجلة</mark>؟</p>
+      <div class="pills">
+        <div class="pill"><b>الدرجات</b>متقاربة جدًا: متوسطها <span class="n">0.98261</span> وانحرافها المعياري <span class="n">0.00808</span>.</div>
+        <div class="pill"><b>الأدلة</b>متباعدة جدًا: من <span class="n">0</span> إلى <span class="n">74</span>، ووسيطها <span class="n">7</span> أقل بكثير من متوسطها <span class="n">17.7</span>.</div>
+        <div class="pill"><b>الارتباط</b>بيرسون <span class="n">−0.131</span> وسبيرمان <span class="n">−0.195</span>، وكلاهما ضعيف وغير دالّ إحصائيًا.</div>
+        <div class="pill"><b>الثبات</b>النتيجة هشّة: بحذف جين <bdi class="g">ADIPOQ</bdi> يصبح الارتباط <span class="n">−0.553</span>، وبحذف <bdi class="g">EPHB2</bdi> يصبح <span class="n">+0.034</span>.</div>
+      </div>
+    </div>
+    <div class="tiles">
+      <div class="tile reveal"><div class="v n">10</div><div class="t">جينات في التحليل</div><div class="d">الجينات العشرة الأعلى درجة في الجدول السادس من الدراسة.</div></div>
+      <div class="tile reveal"><div class="v n">0.98261</div><div class="t">متوسط درجة التنبؤ</div><div class="d">قريب من 1 لأن الجينات مختارة أصلًا من الأعلى.</div></div>
+      <div class="tile reveal"><div class="v n">17.7</div><div class="t">متوسط عدد الأدلة</div><div class="d">والوسيط 7، فالمتوسط يرفعه جينان كثيرا الأدلة.</div></div>
+      <div class="tile reveal"><div class="v n">−0.131</div><div class="t">ارتباط بيرسون</div><div class="d">قريب من الصفر، وفترة الثقة له واسعة جدًا.</div></div>
+    </div>
+    <div class="callout reveal"><b>التوصية الرئيسية:</b> عند ترتيب الجينات المرشحة للدراسة، لا تكفي درجة التنبؤ الحاسوبي وحدها. تُراجَع الأدلة العلمية معها، ويُتحقّق من كل جين بدراسات إضافية قبل اقتراح أي تطبيق علاجي.</div>
+  </div>
+</section>
+
+<!-- ================= 2 المشكلة ================= -->
+<section class="s-sand" id="problem">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">المشكلة البحثية</span>
+      <h2><span class="sec-n n">02</span>لماذا هذا السؤال؟</h2>
+      <p class="lead">يحتاج سرطان القولون إلى أبحاث مستمرة لفهم آلياته الجزيئية وتطوير علاجات أدق. تساعد النماذج الحاسوبية في ترشيح الجينات والبروتينات التي تستحق الدراسة، لكن ارتفاع درجة الجين في النموذج لا يعني بالضرورة أن الأبحاث المنشورة تدعمه بالقوة نفسها.</p>
+    </div>
+    <div class="grid g2">
+      <article class="card reveal"><h3>سبب اختيار الموضوع</h3><p>الاهتمام بدور المعلوماتية الحيوية في أبحاث السرطان والطب الدقيق، والرغبة في تطبيق مهارات تحليل البيانات على بيانات علمية موثقة، ومرتبطة ببحث شارك فيه باحثون سعوديون.</p></article>
+      <article class="card reveal"><h3>فجوة السؤال</h3><p>الدرجة الحاسوبية «توقع»، وعدد الأدلة «ما سُجّل فعلًا». يقارن المشروع بين الاثنين لعشرة جينات مرشحة، ليرى هل يتفقان أم يختلفان.</p></article>
+    </div>
+    <div class="reveal" style="margin-top:44px">
+      <h3 style="font-size:24px;color:var(--night)">مصطلحان أساسيان</h3>
+    </div>
+    <div class="grid g2" style="margin-top:20px">
+      <article class="card reveal"><h3>درجة التنبؤ</h3><p>رقم من <span class="n">0</span> إلى <span class="n">1</span> يعطيه النموذج الحاسوبي لكل جين. كلما اقترب من <span class="n">1</span> رشّحه النموذج بقوة أكبر كهدف علاجي محتمل. هي توقّع حاسوبي وليست نتيجة تجربة.</p></article>
+      <article class="card reveal"><h3>عدد الأدلة المسجلة</h3><p>عدد الأدلة التي تربط الجين بسرطان القولون كما سجّلها الجدول الأصلي، من مصادر منصة <bdi class="g">Open Targets</bdi>. كلما زاد، فالجين أكثر حضورًا في الأدلة المسجلة. شرحه الكامل في قسم «مصدر البيانات».</p></article>
+    </div>
+    <div class="reveal" style="margin-top:44px">
+      <h3 style="font-size:24px;color:var(--night)">أسئلة البحث</h3>
+    </div>
+    <div class="ans reveal"><span class="q">س1</span><p>ما متوسط درجات التنبؤ للجينات العشرة، ومدى تقاربها؟</p></div>
+    <div class="ans reveal"><span class="q">س2</span><p>ما الجينات ذات أعلى درجة تنبؤ، وما الجينات الأكثر أدلة؟</p></div>
+    <div class="ans reveal"><span class="q">س3</span><p>هل توجد علاقة بين درجة التنبؤ وعدد الأدلة؟ (بيرسون وسبيرمان)</p></div>
+    <div class="ans reveal"><span class="q">س4</span><p>هل يتفق ترتيب الجينات حسب الدرجة مع ترتيبها حسب الأدلة؟</p></div>
+    <div class="ans reveal"><span class="q">س5</span><p>هل تبقى النتيجة كما هي إذا حذفنا جينًا واحدًا من التحليل؟</p></div>
+
+    <div class="reveal" style="margin-top:44px">
+      <h3 style="font-size:24px;color:var(--night)">أهداف المشروع</h3>
+    </div>
+    <div class="grid g3" style="margin-top:20px">
+      <article class="card reveal"><p>تحليل بيانات عشرة جينات مرشحة كأهداف علاجية محتملة لسرطان القولون.</p></article>
+      <article class="card reveal"><p>فحص جودة البيانات: القيم المفقودة والمكررة وغير الصالحة.</p></article>
+      <article class="card reveal"><p>حساب المتوسط والوسيط والانحراف المعياري ومعاملات الارتباط.</p></article>
+      <article class="card reveal"><p>اختبار ثبات النتيجة بإعادة العينة (Bootstrap) والتبديل العشوائي وحذف جين في كل مرة.</p></article>
+      <article class="card reveal"><p>رسم المقارنات بيانيًا، وتحويل الأرقام إلى استنتاجات واضحة.</p></article>
+      <article class="card reveal"><p>صياغة توصيات بحثية مبنية على النتائج، مع تحديد حدودها.</p></article>
+    </div>
+    <div class="callout reveal"><b>نطاق الدراسة:</b> عشرة جينات فقط من نتائج النموذج، وليست كل الجينات المرتبطة بسرطان القولون. يقتصر التحليل على درجة التنبؤ وعدد الأدلة وأنواعها كما وردت في الجدول، من دون تجارب مخبرية ومن دون اختبار فعالية أدوية. لذلك النتائج استكشافية.</div>
+  </div>
+</section>
+
+<!-- ================= 3 البيانات ================= -->
+<section class="s-blue" id="data">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">مصدر البيانات ووصفها</span>
+      <h2><span class="sec-n n">03</span>من أين جاءت الأرقام؟</h2>
+      <p class="lead">البيانات من الجدول السادس (<bdi class="g">Table 6</bdi>) في دراسة نُشرت في <bdi class="g">Frontiers in Genetics</bdi> عام 2023، ومن مؤلفيها باحثون من جامعة الملك عبدالله للعلوم والتقنية (KAUST).</p>
+      <p class="g" style="direction:ltr;text-align:left;margin-top:14px;opacity:.85;max-width:none;font-size:15px;font-weight:400;line-height:1.7">OncoRTT: Predicting novel oncology-related therapeutic targets using BERT embeddings and omics features</p>
+    </div>
+    <div class="grid g2">
+      <article class="card reveal" style="background:rgba(255,246,227,.1);border-color:rgba(255,246,227,.25);color:var(--cream)"><h3 style="color:var(--glow)">كيف يُحسب التنبؤ؟</h3><p>نموذج تعلّم عميق يجمع تمثيلات رقمية لتسلسل البروتين (<bdi class="g">ProtBert-BFD</bdi>) مع بيانات التعبير الجيني والطفرات من <bdi class="g">TCGA</bdi>، ثم يعطي لكل جين درجة بين 0 و1 كهدف علاجي محتمل لنوع سرطان محدد.</p></article>
+      <article class="card reveal" style="background:rgba(255,246,227,.1);border-color:rgba(255,246,227,.25);color:var(--cream)"><h3 style="color:var(--glow)">ماذا في الجدول؟</h3><p>أعلى عشرة جينات جديدة مرشحة لسرطان القولون، مرتبة حسب درجة التنبؤ. لكل جين: رمزه ورقم بروتينه في <bdi class="g">UniProt</bdi> ودرجته وعدد أدلته ونوع الدليل.</p></article>
+    </div>
+    <div class="tablewrap reveal"><table id="dataTable" class="wide"><thead><tr>
+      <th>#</th><th>الجين</th><th>UniProt</th><th>درجة التنبؤ</th><th>عدد الأدلة</th><th>أنواع الأدلة المسجّلة</th></tr></thead><tbody></tbody></table></div>
+    <p class="note reveal" style="color:var(--cream)">أنواع الأدلة مترجمة من الجدول الأصلي: Text mining = استخراج النصوص من الأدبيات، RNA expression = التعبير الجيني، Pathways = المسارات الحيوية، Genetic association = ارتباط جيني، Somatic mutations = طفرات جسدية، Drugs = أدوية.</p>
+    <div class="defbox reveal">
+      <h3>ما المقصود بـ«عدد الأدلة المسجلة»؟</h3>
+      <p>هو الرقم الموجود في عمود <bdi class="g"># of evidence</bdi> بالجدول السادس. تصف الدراسة هذا الجدول بأنه يعرض عدد ونوع الأدلة التي تربط الجين بالمرض، أي عدد الروابط الموثّقة بين الجين وسرطان القولون.</p>
+      <p><b>من أين تأتي هذه الأدلة؟</b> استخدم مؤلفو الدراسة منصة <bdi class="g">Open Targets Platform</bdi>، وطبّقوا منها ست طرق للربط بين الجين والسرطان: استخراج النصوص من الأبحاث، والارتباط الجيني، والطفرات الجسدية، والأدوية، والمسارات الحيوية، والتعبير الجيني (RNA). ولهذا يوجد عمود ثانٍ يوضح نوع الدليل لكل جين.</p>
+      <p><b>ماذا يعني الصفر؟</b> تذكر الدراسة أنها كتبت 0 عندما لم تجد ارتباطًا بنوع السرطان المحدد، وأنها تشير إلى ارتباط الجين بسرطانات أخرى إن وُجد. ولذلك جين <bdi class="g">MYLK4</bdi> أدلته 0 لسرطان القولون، وتذكر الدراسة أنه مرتبط بسرطان الخلايا الحرشفية.</p>
+      <div class="trio">
+        <div class="t1"><b>يعني</b>كم رابطًا مسجّلًا بين الجين والمرض في المصادر التي اعتمدتها الدراسة. الرقم الأكبر يعني حضورًا أوسع في الأدلة المسجلة.</div>
+        <div class="t2"><b>لا يعني</b>أن الدليل قوي أو مثبت تجريبيًا، ولا أن الجين صالح للعلاج. والصفر لا يعني أن الجين مرفوض، بل أنه لم يُسجَّل له ارتباط بسرطان القولون في هذا الجدول.</div>
+        <div class="t3"><b>تنبيه منهجي</b>لم تشرح الدراسة كيف حُسب كل رقم. لذلك أتعامل معه كمؤشر على حجم الأدلة المسجلة، لا كمقياس لقوتها أو جودتها.</div>
+      </div>
+    </div>
+    <div class="callout reveal"><b>أثر طريقة الاختيار:</b> الجينات العشرة هي الأعلى درجة في الجدول، وليست عينة عشوائية. لذلك درجاتها قريبة من بعضها بحكم الاختيار نفسه، وهذا يُضعف قدرة أي تحليل ارتباط على إظهار علاقة.</div>
+    <div class="tablewrap reveal"><table><thead><tr><th>المتغير</th><th>الوصف</th></tr></thead><tbody>
+      <tr><td class="g">gene</td><td class="wrapc">رمز الجين المرشح</td></tr>
+      <tr><td class="g">uniprot_id</td><td class="wrapc">معرّف البروتين المرتبط بالجين في قاعدة UniProt</td></tr>
+      <tr><td class="g">prediction_score</td><td class="wrapc">درجة التنبؤ الحاسوبي (من 0 إلى 1)</td></tr>
+      <tr><td class="g">evidence_count</td><td class="wrapc">عدد الأدلة التي تربط الجين بسرطان القولون كما سجّلها الجدول (عمود <bdi class="g"># of evidence</bdi>)، ومصدرها منصة Open Targets. القيمة 0 تعني عدم تسجيل ارتباط بسرطان القولون</td></tr>
+      <tr><td class="g">evidence_types</td><td class="wrapc">أنواع الأدلة المسجّلة لكل جين (متغير إضافي أُضيف في هذه النسخة)</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<!-- ================= 4 الجودة ================= -->
+<section class="s-cream" id="cleaning">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">تنظيف البيانات</span>
+      <h2><span class="sec-n n">04</span>فحص جودة البيانات</h2>
+      <p class="lead">استُخدمت <bdi class="g">Python</bdi> ومكتبة <bdi class="g">Pandas</bdi> لفحص الجدول (10 صفوف و5 أعمدة) قبل أي حساب.</p>
+    </div>
+    <div class="tiles">
+      <div class="tile reveal" style="background:var(--glow)"><div class="v n">0</div><div class="t">قيم مفقودة</div><div class="d">لا يوجد خانة فارغة في أي عمود.</div></div>
+      <div class="tile reveal" style="background:var(--peri);color:#fff"><div class="v n">0</div><div class="t">صفوف مكررة</div><div class="d">كل جين ظهر مرة واحدة.</div></div>
+      <div class="tile reveal" style="background:var(--coral);color:#fff"><div class="v n">0</div><div class="t">درجات خارج [0، 1]</div><div class="d">كل الدرجات ضمن النطاق المتوقع.</div></div>
+      <div class="tile reveal" style="background:var(--night);color:var(--cream)"><div class="v n">10</div><div class="t">جينات بقيت</div><div class="d">لم يُحذف أي سجل.</div></div>
+    </div>
+    <div class="callout reveal"><b>معالجة القيمة الصفرية:</b> جين <bdi class="g">MYLK4</bdi> درجته مرتفعة (<span class="n">0.9857</span>) وعدد أدلته <span class="n">0</span>. لم أعتبره خطأً ولا قيمة مفقودة، لأن الجدول الأصلي سجّله هكذا، والدراسة تكتب 0 عند عدم وجود ارتباط بنوع السرطان المحدد مع الإشارة إلى ارتباط الجين بسرطان آخر. لذلك بقي في التحليل، واختُبر أثره لاحقًا في فحص الحساسية.</div>
+    <p class="note reveal">هذه الفحوص تتحقق من سلامة الجدول تقنيًا فقط، ولا تثبت صحة التنبؤات أو الصلاحية العلاجية للجينات.</p>
+  </div>
+</section>
+
+<!-- ================= 5 التحليل ================= -->
+<section class="s-sand" id="stats">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">التحليل الإحصائي والرسوم</span>
+      <h2><span class="sec-n n">05</span>ماذا تقول الأرقام؟</h2>
+    </div>
+
+    <h3 class="reveal" style="margin-top:20px;font-size:22px;color:var(--night)">أ) الإحصاءات الوصفية</h3>
+    <div class="tablewrap reveal"><table><thead><tr><th>المؤشر</th><th>درجة التنبؤ</th><th>عدد الأدلة</th></tr></thead><tbody>
+      <tr><td>المتوسط</td><td class="n">0.98261</td><td class="n">17.7</td></tr>
+      <tr><td>الوسيط</td><td class="n">0.98290</td><td class="n">7</td></tr>
+      <tr><td>الانحراف المعياري (عينة)</td><td class="n">0.00808</td><td class="n">23.06</td></tr>
+      <tr><td>أصغر قيمة</td><td class="n">0.9722</td><td class="n">0</td></tr>
+      <tr><td>أكبر قيمة</td><td class="n">0.9969</td><td class="n">74</td></tr>
+      <tr><td>معامل الاختلاف (الانحراف ÷ المتوسط)</td><td class="n">0.82%</td><td class="n">130%</td></tr>
+    </tbody></table></div>
+    <h3 class="gl-head reveal">ماذا يعني كل مؤشر في هذا الجدول؟</h3>
+    <p class="gl-sub reveal">شرح بكلمات عادية، مع ما يقوله كل مؤشر عن الجينات العشرة.</p>
+    <div class="gloss">
+      <div class="gl reveal"><b class="t">المتوسط</b><p>الرقم «المعتاد»: نجمع كل القيم ونقسمها على عددها.</p><span class="here">هنا: متوسط الدرجات <span class="n">0.98261</span>، أي أن النموذج يرى الجينات كلها مرشحة بقوة. ومتوسط الأدلة <span class="n">17.7</span> دليلًا لكل جين.</span></div>
+      <div class="gl reveal"><b class="t">الوسيط</b><p>القيمة التي تقف في المنتصف لو رتّبنا الجينات من الأقل إلى الأكثر: نصف الجينات تحتها ونصفها فوقها. لا يتأثر بالأرقام الشاذة الكبيرة.</p><span class="eg">مثال: خمسة أصدقاء قرأ كل منهم عددًا من الكتب: <span class="n">1</span>، <span class="n">2</span>، <span class="n">2</span>، <span class="n">3</span>، <span class="n">100</span>. المتوسط <span class="n">21.6</span> كتابًا، لكن الوسيط <span class="n">2</span>، وهو الأقرب لحال أغلبهم.</span><span class="here">هنا: وسيط الأدلة <span class="n">7</span> أقل بكثير من متوسطها <span class="n">17.7</span>، لأن <bdi class="g">ADIPOQ</bdi> (74) و<bdi class="g">EPHB2</bdi> (42) يرفعان المتوسط.</span></div>
+      <div class="gl reveal"><b class="t">الانحراف المعياري</b><p>يقيس مدى ابتعاد القيم عن متوسطها. الرقم الصغير يعني أن القيم متقاربة، والكبير يعني أنها متباعدة. كلمة «عينة» تعني أننا حسبناه على أساس أن الجينات العشرة جزء من مجموعة أكبر.</p><span class="here">هنا: <span class="n">0.00808</span> للدرجات، صغير جدًا فالدرجات شبه متطابقة. و<span class="n">23.06</span> للأدلة، كبير فالجينات مختلفة جدًا في عدد أدلتها.</span></div>
+      <div class="gl reveal"><b class="t">أصغر قيمة وأكبر قيمة</b><p>الحدّان الأدنى والأعلى، ويبيّنان مدى الفرق بين أضعف جين وأقوى جين.</p><span class="here">هنا: الدرجات من <span class="n">0.9722</span> (<bdi class="g">EPHA7</bdi>) إلى <span class="n">0.9969</span> (<bdi class="g">EEF1A1</bdi>)، فالفرق ضئيل. والأدلة من <span class="n">0</span> (<bdi class="g">MYLK4</bdi>) إلى <span class="n">74</span> (<bdi class="g">ADIPOQ</bdi>)، فالفرق ضخم.</span></div>
+      <div class="gl reveal"><b class="t">معامل الاختلاف</b><p>هو الانحراف المعياري مقسومًا على المتوسط، ويظهر كنسبة مئوية. فائدته أنه يسمح بمقارنة التباعد بين شيئين مختلفين في الوحدة، مثل الدرجات وعدد الأدلة.</p><span class="here">هنا: <span class="n">0.82%</span> للدرجات مقابل <span class="n">130%</span> للأدلة. أي أن الأدلة أكثر تباعدًا من الدرجات بأكثر من 150 ضعفًا.</span></div>
+    </div>
+    <p class="reveal" style="margin-top:26px">الدرجات تتشتت أقل من 1% حول متوسطها، أما الأدلة فتتشتت بنسبة 130%. والفرق بين متوسط الأدلة (17.7) ووسيطها (7) يدل على أن جينين، <bdi class="g">ADIPOQ</bdi> و<bdi class="g">EPHB2</bdi>، يرفعان المتوسط بوضوح.</p>
+
+    <div class="panel reveal">
+      <h3>عدد الأدلة لكل جين</h3>
+      <p class="cap">الأعمدة الزرقاء: الجينات الثلاثة التي ركّز عليها التقرير. اضغط على أي جين لتفاصيله.</p>
+      <div class="bars" id="bars"></div>
+      <div class="detail" id="detail">اضغط على أي جين من القائمة وسيظهر هنا ما يخصه.</div>
+    </div>
+
+    <h3 class="reveal" style="margin-top:46px;font-size:22px;color:var(--night)">ب) العلاقة بين الدرجة وعدد الأدلة</h3>
+    <div class="panel reveal">
+      <h3>مخطط التشتت</h3>
+      <p class="cap">كل نقطة جين: الأفقي درجة التنبؤ، والرأسي عدد الأدلة. لو كانت العلاقة قوية لاصطفّت النقاط على خط صاعد أو هابط.</p>
+      <svg id="scatter" viewBox="0 0 480 380" role="img" aria-label="مخطط تشتت يوضح عدم وجود اتجاه واضح بين درجة التنبؤ وعدد الأدلة" style="width:100%;height:auto;display:block"></svg>
+    </div>
+    <div class="tablewrap reveal"><table><thead><tr><th>المقياس</th><th>القيمة</th><th>القيمة الاحتمالية (p)</th></tr></thead><tbody>
+      <tr><td>معامل بيرسون (r)</td><td class="n">−0.131</td><td class="n">0.72</td></tr>
+      <tr><td>معامل سبيرمان (ρ)، يعتمد على الترتيب</td><td class="n">−0.195</td><td class="n">0.59</td></tr>
+      <tr><td>معامل كندال (τ)</td><td class="n">−0.114</td><td class="n">0.65</td></tr>
+      <tr><td>اختبار التبديل العشوائي (20,000 مرة)</td><td class="n">—</td><td class="n">0.71</td></tr>
+      <tr><td>فترة الثقة 95% لمعامل بيرسون (Bootstrap)</td><td>من <span class="n">−0.78</span> إلى <span class="n">+0.39</span></td><td>—</td></tr>
+    </tbody></table></div>
+    <h3 class="gl-head reveal">ماذا يعني كل مقياس في هذا الجدول؟</h3>
+    <p class="gl-sub reveal">كلها تجيب عن سؤالين: هل بين الرقمين علاقة؟ وهل يمكن أن تكون مجرد صدفة؟</p>
+    <div class="gloss">
+      <div class="gl reveal"><b class="t">معامل بيرسون (r)</b><p>يقيس: هل يرتفع الرقمان معًا بشكل منتظم؟ يقع دائمًا بين <span class="n">−1</span> و<span class="n">+1</span>. القرب من <span class="n">+1</span> يعني أنهما يرتفعان معًا، والقرب من <span class="n">−1</span> أن أحدهما يرتفع والآخر ينخفض، والقرب من <span class="n">0</span> يعني أنه لا يوجد خيط واضح بينهما.</p><span class="here">هنا: <span class="n">−0.131</span>، قريب جدًا من الصفر. أي أن علو درجة الجين لا يخبرنا بكثرة أدلته.</span></div>
+      <div class="gl reveal"><b class="t">معامل سبيرمان (ρ)</b><p>الفكرة نفسها، لكن على الترتيب بدل القيم الفعلية: هل الجين الأعلى ترتيبًا بالدرجة هو الأعلى ترتيبًا بالأدلة؟ ميزته أنه لا يتأثر بالرقم الكبير <span class="n">74</span> كما يتأثر بيرسون.</p><span class="here">هنا: <span class="n">−0.195</span>، ضعيف أيضًا. فنفس النتيجة تظهر بطريقة ثانية.</span></div>
+      <div class="gl reveal"><b class="t">معامل كندال (τ)</b><p>يقارن كل جينين معًا ويسأل: هل الأعلى درجة منهما هو الأكثر أدلة؟ ثم يحسب كم زوجًا اتفق وكم زوجًا اختلف.</p><span class="here">هنا: <span class="n">−0.114</span>. الأزواج المختلفة أكثر من المتفقة بفارق صغير جدًا، أي لا يوجد اتفاق واضح.</span></div>
+      <div class="gl reveal"><b class="t">القيمة الاحتمالية (p)</b><p>تجيب عن سؤال: لو لم تكن هناك علاقة حقيقية أصلًا، فما احتمال أن تعطينا الصدفة وحدها ارتباطًا بهذا الحجم أو أكبر؟ وعادةً نعتبر العلاقة مؤكدة إحصائيًا عندما تكون أقل من <span class="n">0.05</span> (أي 5%).</p><span class="here">هنا: القيم بين <span class="n">0.59</span> و<span class="n">0.72</span>. يعني أن الصدفة كانت ستعطينا مثل هذا الارتباط في أكثر من نصف المرات، فلا نستطيع القول إن العلاقة حقيقية.</span></div>
+      <div class="gl reveal"><b class="t">اختبار التبديل العشوائي</b><p>نخلط أعداد الأدلة عشوائيًا بين الجينات، ونحسب الارتباط بعد كل خلط، ونكرر ذلك <span class="n">20,000</span> مرة. ثم ننظر: كم مرة أعطانا الخلط العشوائي ارتباطًا بقوة ارتباطنا الحقيقي أو أقوى؟</p><span class="here">هنا: نحو <span class="n">71%</span> من المرات. أي أن ارتباطنا لا يختلف عمّا تصنعه الصدفة.</span></div>
+      <div class="gl reveal"><b class="t">فترة الثقة 95% (Bootstrap)</b><p>نعيد اختيار جينات من العشرة (مع السماح بتكرار الجين) آلاف المرات، ونحسب الارتباط كل مرة. المدى الذي تقع فيه 95% من النتائج يعطينا فكرة عن القيمة الحقيقية المحتملة للارتباط.</p><span class="here">هنا: من <span class="n">−0.78</span> إلى <span class="n">+0.39</span>، وهو مدى عريض جدًا ويضم الصفر، لأن عشرة جينات عينة صغيرة. فلا نعرف حتى اتجاه العلاقة بثقة.</span></div>
+    </div>
+    <p class="reveal" style="margin-top:26px">كل القيم الاحتمالية بعيدة جدًا عن 0.05، وفترة الثقة تمتد من علاقة عكسية قوية إلى علاقة طردية متوسطة. بكلمات بسيطة: هذه العينة الصغيرة لا تسمح بقول إن الدرجة تتبع الأدلة، ولا بقول إنها تعاكسها.</p>
+
+    <h3 class="reveal" style="margin-top:46px;font-size:22px;color:var(--night)">ج) هل النتيجة ثابتة؟ حذف جين في كل مرة</h3>
+    <div class="panel reveal">
+      <h3>الارتباط بعد حذف كل جين</h3>
+      <p class="cap">الخط المنقّط هو الارتباط الأصلي (<span class="n">−0.131</span>). كل عمود هو الارتباط الجديد بعد استبعاد الجين المكتوب.</p>
+      <svg id="loo" viewBox="0 0 480 380" role="img" aria-label="الارتباط بعد حذف كل جين" style="width:100%;height:auto;display:block"></svg>
+    </div>
+    <p class="reveal" style="margin-top:18px">حذف <bdi class="g">ADIPOQ</bdi> يحرّك الارتباط إلى <span class="n">−0.553</span>، وحذف <bdi class="g">EPHB2</bdi> يجعله <span class="n">+0.034</span>. تغيّر الإشارة بحذف جين واحد يعني أن الرقم الأصلي لا يمكن الاعتماد عليه وحده. وحتى بعد تحويل الأدلة إلى مقياس لوغاريتمي (لتخفيف أثر القيمة 74) يبقى الارتباط سالبًا وضعيفًا (<span class="n">−0.262</span>).</p>
+
+    <h3 class="reveal" style="margin-top:46px;font-size:22px;color:var(--night)">د) مقارنة الترتيبين</h3>
+    <div class="panel reveal">
+      <h3>ترتيب الجين: حسب الدرجة مقابل حسب الأدلة</h3>
+      <p class="cap">كل خط يصل ترتيب الجين عند الحاسوب بترتيبه عند الأدلة. الخط الأزرق يعني أن الأدلة تضعه أعلى من الحاسوب، والمرجاني يعني العكس.</p>
+      <svg id="slope" viewBox="0 0 480 460" role="img" aria-label="مقارنة ترتيب الجينات بين درجة التنبؤ وعدد الأدلة" style="width:100%;height:auto;display:block"></svg>
+      <p class="note">عند تساوي عدد الأدلة (<bdi class="g">HP</bdi> و<bdi class="g">CHL1</bdi>، و<bdi class="g">IGFBP5</bdi> و<bdi class="g">TFF1</bdi>) رُتّب الجين الأعلى درجة أولًا في الرسم.</p>
+    </div>
+    <div class="tablewrap reveal"><table id="rankTable"><thead><tr><th>الجين</th><th>الترتيب حسب الدرجة</th><th>الترتيب حسب الأدلة</th><th>الفرق</th></tr></thead><tbody></tbody></table></div>
+
+    <h3 class="reveal" style="margin-top:46px;font-size:22px;color:var(--night)">هـ) تنوّع أنواع الأدلة</h3>
+    <p class="reveal">أضفتُ نظرة إضافية: لا يهم عدد الأدلة فقط، بل تنوع مصادرها أيضًا (استخراج نصوص، تعبير جيني، طفرات، أدوية...). جينان يلفتان النظر:</p>
+    <div class="stars" style="margin-top:20px">
+      <article class="star s2 reveal"><span class="kicker">الأدنى درجة بين العشرة، والأغنى أدلة بعد ADIPOQ</span><div class="gn">EPHB2 · EPHA7</div>
+        <div class="two"><div><b class="n">9 و10</b>ترتيبهما بالدرجة</div><div><b class="n">2 و3</b>ترتيبهما بالأدلة</div></div>
+        <p>لكل منهما أربعة أنواع من الأدلة، منها الطفرات الجسدية والأدوية.</p></article>
+      <article class="star s1 reveal"><span class="kicker">الأعلى درجة</span><div class="gn">EEF1A1</div>
+        <div class="two"><div><b class="n">1</b>ترتيبه بالدرجة</div><div><b class="n">5</b>ترتيبه بالأدلة</div></div>
+        <p>مدعوم بنوع واحد فقط من الأدلة، هو استخراج النصوص.</p></article>
+    </div>
+    <p class="note reveal">العلاقة بين عدد أنواع الأدلة وعدد الأدلة ضعيفة (<span class="n">r = 0.32</span>) وهي وصفية فقط بسبب صغر العينة. حُسبت أنواع الأدلة لـ<bdi class="g">MYLK4</bdi> صفرًا لأن الجدول قيّده بعبارة «مرتبط بنوع سرطان واحد».</p>
+  </div>
+</section>
+
+<!-- ================= 6 الإجابات ================= -->
+<section class="s-cream" id="answers">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">النتائج والاستنتاجات</span>
+      <h2><span class="sec-n n">06</span>الإجابة عن أسئلة البحث</h2>
+    </div>
+    <div class="ans reveal"><span class="q">س1</span><h3>متوسط الدرجات وتقاربها</h3><p>متوسط الدرجات <b class="n">0.98261</b> بانحراف معياري <b class="n">0.00808</b>، فالدرجات عالية ومتقاربة جدًا (من <span class="n">0.9722</span> إلى <span class="n">0.9969</span>). وهذا متوقع لأن الجينات هي العشرة الأعلى في الجدول.</p></div>
+    <div class="ans reveal"><span class="q">س2</span><h3>الأعلى درجة والأكثر أدلة</h3><p><bdi class="g">EEF1A1</bdi> أعلى درجة (<span class="n">0.9969</span>) مع 8 أدلة. <bdi class="g">ADIPOQ</bdi> أكثر الجينات أدلة (74 دليلًا) بدرجة <span class="n">0.9866</span>. و<bdi class="g">MYLK4</bdi> درجته <span class="n">0.9857</span> بلا أدلة مسجلة.</p></div>
+    <div class="ans reveal"><span class="q">س3</span><h3>العلاقة بين الدرجة والأدلة</h3><p>بيرسون <b class="n">−0.131</b> وسبيرمان <b class="n">−0.195</b>، كلاهما ضعيف وغير دالّ إحصائيًا (<span class="n">p ≥ 0.59</span>)، وفترة الثقة واسعة (<span class="n">−0.78</span> إلى <span class="n">+0.39</span>). لا نستطيع القول إن علاقة موجودة، ولا إنها غير موجودة.</p></div>
+    <div class="ans reveal"><span class="q">س4</span><h3>اتفاق الترتيبين</h3><p>لا يتفقان. جين واحد فقط (<bdi class="g">TFF1</bdi>) ترتيبه متطابق في الاثنين (الثامن). أكبر فرق في <bdi class="g">EPHB2</bdi> و<bdi class="g">EPHA7</bdi> (يتقدّمان 7 مراتب بالأدلة)، ثم <bdi class="g">MYLK4</bdi> الذي يتراجع 5 مراتب.</p></div>
+    <div class="ans reveal"><span class="q">س5</span><h3>ثبات النتيجة</h3><p>غير ثابتة. يتراوح الارتباط بين <span class="n">−0.553</span> و<span class="n">+0.034</span> حسب الجين المحذوف، فيكفي جين واحد ليغيّر الصورة.</p></div>
+    <div class="callout reveal"><b>الخلاصة:</b> تقارب درجات التنبؤ مقابل تباعد الأدلة، مع ارتباط ضعيف هشّ، يبيّن أن «التنبؤ الحاسوبي» و«الدليل البحثي» مقياسان مختلفان. استخدامهما معًا أنفع من الاعتماد على أحدهما.</div>
+  </div>
+</section>
+
+<!-- ================= 7 الحدود ================= -->
+<section class="s-night" id="limits">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">بحذر</span>
+      <h2><span class="sec-n n">07</span>حدود النتائج</h2>
+    </div>
+    <div class="yn reveal">
+      <div class="yes"><h3>ما تدعمه النتائج</h3><ul>
+        <li>الدرجات الحاسوبية للجينات العشرة عالية ومتقاربة.</li>
+        <li>أعداد الأدلة تتفاوت كثيرًا بين الجينات.</li>
+        <li>الترتيب بالدرجة لا يطابق الترتيب بالأدلة.</li>
+        <li>مراجعة الأدلة ضرورية مع درجة النموذج.</li></ul></div>
+      <div class="no"><h3>ما لا تدعمه</h3><ul>
+        <li>إثبات أن جينًا هدف علاجي صالح.</li>
+        <li>تعميم النتائج على كل الجينات: العينة عشرة جينات مختارة من الأعلى.</li>
+        <li>قرارات طبية: لم تُجرَ تجارب مخبرية.</li>
+        <li>الحكم على جودة الأدلة: العدد لا يقيس قوتها، والدراسة لم تشرح طريقة حسابه.</li></ul></div>
+    </div>
+    <div class="callout reveal"><b>حدود إحصائية:</b> عشر ملاحظات فقط، ومدى الدرجات مضغوط بسبب الاختيار من القمة، وقيمة واحدة كبيرة (74) تؤثر في المتوسط والارتباط. لذلك القيم الاحتمالية هنا للاسترشاد وليست حكمًا نهائيًا.</div>
+  </div>
+</section>
+
+<!-- ================= 8 التوصيات ================= -->
+<section class="s-blue" id="recs">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">التوصيات والخاتمة</span>
+      <h2><span class="sec-n n">08</span>ماذا بعد؟</h2>
+    </div>
+    <div class="recs">
+      <div class="rec reveal"><div><h3>اجمع التنبؤ مع الأدلة</h3><p>لا يُرتَّب الجين للدراسة بدرجة النموذج وحدها. تُراجع الأدلة المرتبطة به وجودتها وصلتها بسرطان القولون.</p></div></div>
+      <div class="rec reveal"><div><h3>راجع الجينات البارزة</h3><p><bdi class="g">EEF1A1</bdi> لأعلى درجة، و<bdi class="g">ADIPOQ</bdi> لأكثر الأدلة، و<bdi class="g">MYLK4</bdi> لدرجته المرتفعة بلا أدلة للقولون في الجدول، و<bdi class="g">EPHB2</bdi> و<bdi class="g">EPHA7</bdi> لتنوع أدلتهما رغم انخفاض ترتيبهما. هذه حالات تستحق مراجعة، وليست أهدافًا مثبتة.</p></div></div>
+      <div class="rec reveal"><div><h3>وسّع البيانات</h3><p>استخدام قائمة أطول من الجينات، لا العشرة الأعلى فقط، يعطي مدى درجات أوسع واختبارًا أقوى للعلاقة. ويمكن إضافة بيانات التعبير الجيني وتفاعل البروتينات ونتائج الدراسات التجريبية.</p></div></div>
+      <div class="rec reveal"><div><h3>تحقق باستقلالية</h3><p>قواعد بيانات علمية أخرى، ومراجعة الدراسات المنشورة، ثم تجارب مخبرية عند توافر الإمكانات.</p></div></div>
+    </div>
+    <div class="callout reveal"><b>الخاتمة:</b> طبّق المشروع مهارات علوم البيانات على نتائج بحثية منشورة: فحص الجودة، والإحصاء الوصفي، والارتباط، واختبار الثبات، والرسم. وأبرز ما خرج به أن التنبؤ الحاسوبي لا يغني عن الدليل، وأن النتائج على عينة صغيرة يجب أن تُختبر قبل تصديقها. ويمكن تطويره بعينة أكبر وأدلة تجريبية ودمج المزيد من الميزات الحيوية.</div>
+  </div>
+</section>
+
+<!-- ================= 9 المراجع ================= -->
+<section class="s-cream" id="refs">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">المراجع والمرفقات</span>
+      <h2><span class="sec-n n">09</span>المصدر والكود</h2>
+    </div>
+    <ul class="refs reveal" style="list-style:none;margin-top:18px">
+      <li>الدراسة الأساسية: <bdi class="g">Thafar M.A. et al., OncoRTT: Predicting novel oncology-related therapeutic targets using BERT embeddings and omics features. Frontiers in Genetics (2023).</bdi></li>
+      <li><a href="https://doi.org/10.3389/fgene.2023.1139626" target="_blank" rel="noopener">https://doi.org/10.3389/fgene.2023.1139626</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10117673/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC10117673/</a> (الجدول السادس)</li>
+      <li>توثيق Pandas: <a href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener">pandas.pydata.org/docs</a> · Matplotlib: <a href="https://matplotlib.org/stable/" target="_blank" rel="noopener">matplotlib.org/stable</a> · SciPy: <a href="https://docs.scipy.org/doc/scipy/" target="_blank" rel="noopener">docs.scipy.org/doc/scipy</a></li>
+    </ul>
+    <details class="reveal" style="margin-top:30px">
+      <summary>الكود البرمجي الكامل (Python)</summary>
+      <div class="code-box"><div class="code-bar"><span>analysis.py</span><button id="copyBtn" type="button">نسخ الكود</button></div><pre><code id="code"># -*- coding: utf-8 -*-
+&quot;&quot;&quot;
+Exploratory Analysis of Potential Therapeutic Gene Targets in Colon Cancer
+Bioinformatics bootcamp final project - Lama
+Source: Table 6, OncoRTT (Front. Genet. 2023) - top 10 predicted targets for colon cancer
+&quot;&quot;&quot;
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+# 1) Data (Table 6 of the OncoRTT paper) ------------------------------------
+data = [
+    # gene,    uniprot_id, prediction_score, evidence_count, evidence_types
+    (&quot;EEF1A1&quot;, &quot;P68104&quot;, 0.9969,  8, &quot;Text mining&quot;),
+    (&quot;HP&quot;,     &quot;P00738&quot;, 0.9892,  6, &quot;Text mining, RNA expression&quot;),
+    (&quot;CHL1&quot;,   &quot;O00533&quot;, 0.9886,  6, &quot;Text mining, RNA expression&quot;),
+    (&quot;ADIPOQ&quot;, &quot;Q15848&quot;, 0.9866, 74, &quot;Text mining, RNA expression&quot;),
+    (&quot;MYLK4&quot;,  &quot;Q86YV6&quot;, 0.9857,  0, &quot;Linked to one cancer&quot;),
+    (&quot;IGFBP5&quot;, &quot;P24593&quot;, 0.9801,  5, &quot;Text mining, RNA expression&quot;),
+    (&quot;ILK&quot;,    &quot;Q13418&quot;, 0.9785, 13, &quot;Text mining, Pathways&quot;),
+    (&quot;TFF1&quot;,   &quot;P04155&quot;, 0.9756,  5, &quot;Text mining, RNA expression, Genetic association&quot;),
+    (&quot;EPHB2&quot;,  &quot;P29323&quot;, 0.9727, 42, &quot;Text mining, RNA expression, Somatic mutations, Drugs&quot;),
+    (&quot;EPHA7&quot;,  &quot;Q15375&quot;, 0.9722, 18, &quot;Text mining, RNA expression, Somatic mutations, Drugs&quot;),
+]
+df = pd.DataFrame(data, columns=[&quot;gene&quot;, &quot;uniprot_id&quot;, &quot;prediction_score&quot;,
+                                 &quot;evidence_count&quot;, &quot;evidence_types&quot;])
+df.to_csv(&quot;genes.csv&quot;, index=False)
+
+# 2) Data quality -----------------------------------------------------------
+print(&quot;rows x cols      :&quot;, df.shape)
+print(&quot;missing values   :&quot;, int(df.isna().sum().sum()))
+print(&quot;duplicated rows  :&quot;, int(df.duplicated().sum()))
+print(&quot;scores outside [0,1]:&quot;, int((~df.prediction_score.between(0, 1)).sum()))
+print(&quot;zero-evidence genes :&quot;, df.loc[df.evidence_count == 0, &quot;gene&quot;].tolist())
+
+# 3) Descriptive statistics ---------------------------------------------------
+s, e = df.prediction_score, df.evidence_count
+print(&quot;\nPrediction score: mean=%.5f  median=%.5f  sd(sample)=%.5f  sd(population)=%.5f  min=%.4f  max=%.4f&quot;
+      % (s.mean(), s.median(), s.std(), s.std(ddof=0), s.min(), s.max()))
+print(&quot;Evidence count  : mean=%.1f  median=%.1f  sd=%.2f  min=%d  max=%d&quot;
+      % (e.mean(), e.median(), e.std(), e.min(), e.max()))
+print(&quot;Coefficient of variation: score=%.2f%%  evidence=%.0f%%&quot;
+      % (100 * s.std() / s.mean(), 100 * e.std() / e.mean()))
+
+# 4) Correlation ------------------------------------------------------------------
+r, p_r = stats.pearsonr(s, e)
+rho, p_rho = stats.spearmanr(s, e)
+tau, p_tau = stats.kendalltau(s, e)
+print(&quot;\nPearson  r   = %.3f (p=%.2f)&quot; % (r, p_r))
+print(&quot;Spearman rho = %.3f (p=%.2f)&quot; % (rho, p_rho))
+print(&quot;Kendall  tau = %.3f (p=%.2f)&quot; % (tau, p_tau))
+
+# permutation test + bootstrap CI (small sample, so we do not rely on a formula alone)
+rng = np.random.default_rng(42)
+perm = np.array([np.corrcoef(s, rng.permutation(e))[0, 1] for _ in range(20000)])
+print(&quot;Permutation p-value (two-sided): %.3f&quot; % (np.mean(np.abs(perm) &gt;= abs(r))))
+boot = []
+for _ in range(20000):
+    idx = rng.integers(0, len(df), len(df))
+    if s.iloc[idx].nunique() &gt; 1 and e.iloc[idx].nunique() &gt; 1:
+        boot.append(np.corrcoef(s.iloc[idx], e.iloc[idx])[0, 1])
+lo, hi = np.percentile(boot, [2.5, 97.5])
+print(&quot;Bootstrap 95%% CI for r: [%.2f, %.2f]&quot; % (lo, hi))
+
+# sensitivity: remove one gene at a time
+loo = {g: np.corrcoef(s.drop(i), e.drop(i))[0, 1] for i, g in df.gene.items()}
+print(&quot;\nLeave-one-out Pearson r:&quot;)
+for g, v in sorted(loo.items(), key=lambda x: x[1]):
+    print(&quot;  without %-7s r = %+.3f&quot; % (g, v))
+print(&quot;log(1+evidence) Pearson r = %.3f&quot; % np.corrcoef(s, np.log1p(e))[0, 1])
+
+# 5) Ranks -------------------------------------------------------------------------
+df[&quot;rank_by_score&quot;] = s.rank(ascending=False).astype(int)
+df[&quot;rank_by_evidence&quot;] = e.rank(ascending=False, method=&quot;min&quot;).astype(int)
+df[&quot;rank_gap&quot;] = df.rank_by_score - df.rank_by_evidence
+print(&quot;\n&quot;, df[[&quot;gene&quot;, &quot;prediction_score&quot;, &quot;evidence_count&quot;,
+                &quot;rank_by_score&quot;, &quot;rank_by_evidence&quot;, &quot;rank_gap&quot;]].to_string(index=False))
+
+# 6) Extra look: variety of evidence types ---------------------------------------------
+df[&quot;n_types&quot;] = df.evidence_types.apply(
+    lambda t: 0 if t.startswith(&quot;Linked&quot;) else len([x for x in t.split(&quot;,&quot;) if x.strip()]))
+print(&quot;\nEvidence types per gene:\n&quot;, df[[&quot;gene&quot;, &quot;n_types&quot;, &quot;evidence_count&quot;]].to_string(index=False))
+print(&quot;Pearson r (n_types vs evidence_count) = %.3f&quot; % np.corrcoef(df.n_types, e)[0, 1])
+
+# 7) Figures ----------------------------------------------------------------------------------
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(s, e, s=60, color=&quot;#5B6CA4&quot;)
+for _, row in df.iterrows():
+    ax.annotate(row.gene, (row.prediction_score, row.evidence_count),
+                textcoords=&quot;offset points&quot;, xytext=(5, 5), fontsize=8)
+ax.set_xlabel(&quot;Prediction score&quot;); ax.set_ylabel(&quot;Evidence count&quot;)
+ax.set_title(&quot;Gene prediction vs evidence&quot;); fig.tight_layout()
+fig.savefig(&quot;fig1_scatter.png&quot;, dpi=200)
+
+fig, ax = plt.subplots(figsize=(6, 4))
+d = df.sort_values(&quot;evidence_count&quot;)
+ax.barh(d.gene, d.evidence_count, color=&quot;#DC897B&quot;)
+ax.set_xlabel(&quot;Evidence count&quot;); ax.set_title(&quot;Research evidence by gene&quot;)
+fig.tight_layout(); fig.savefig(&quot;fig2_evidence_bar.png&quot;, dpi=200)
+</code></pre></div>
+    </details>
+    <p class="note reveal">الكود هو نفسه الذي أُنتجت به الأرقام في هذه الصفحة. يحتاج Python مع pandas وnumpy وscipy وmatplotlib.</p>
+  </div>
+</section>
+
+<!-- ================= 10 الخلاصة ================= -->
+<section class="final" id="summary">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">الخلاصة</span>
+      <h2><span class="sec-n n">10</span>ماذا يعني هذا التقرير في حياتنا؟</h2>
+      <p class="lead">لو أخذنا الأرقام والجينات جانبًا، فالتقرير يقول شيئًا بسيطًا نستعمله كل يوم: <b>التوقع شيء، والدليل شيء آخر.</b></p>
+    </div>
+
+    <h3 class="sub reveal">الفكرة في ثلاثة مواقف من الحياة</h3>
+    <div class="grid g3" style="margin-top:16px">
+      <article class="card reveal"><h3>تقييم المنتجات</h3>
+        <p>منتج يظهر بتقييم 4.9 من 5، لكن فقط ثلاثة أشخاص قيّموه. ومنتج آخر تقييمه 4.6 وقيّمه ألفا شخص. أيهما تثق به أكثر؟</p>
+        <div class="pair"><div class="a"><b class="n">0.9969</b><span class="n">8</span> أدلة، كالأول</div><div class="b"><b class="n">0.9866</b><span class="n">74</span> دليلًا، كالثاني</div></div>
+        <div class="ex">هذا بالضبط حال <bdi class="g">EEF1A1</bdi> و<bdi class="g">ADIPOQ</bdi>.</div></article>
+      <article class="card reveal"><h3>مطعم جديد</h3>
+        <p>تطبيق يتوقع أن مطعمًا جديدًا سيعجبك جدًا، لكن لا أحد جرّبه بعد. قد يكون ممتازًا فعلًا، وقد لا يكون. لا نعرف قبل التجربة.</p>
+        <div class="ex">هذا حال <bdi class="g">MYLK4</bdi>: درجة مرتفعة بلا أدلة مسجلة لسرطان القولون.</div></article>
+      <article class="card reveal"><h3>أخبار «الذكاء الاصطناعي اكتشف علاجًا»</h3>
+        <p>عندما تقرأ مثل هذا العنوان، اسأل: هل هذا توقع من نموذج حاسوبي، أم نتيجة جُرّبت وتحقق منها باحثون؟ الفرق بينهما كبير جدًا.</p>
+        <div class="ex">الدرجة الحاسوبية في هذا المشروع هي «توقع»، ولا تعني علاجًا.</div></article>
+    </div>
+
+    <h3 class="sub reveal">ما فائدة التقرير؟</h3>
+    <ul class="pts reveal">
+      <li><b>للمجال العلمي:</b> يساعد على ترتيب الجينات التي تستحق الدراسة أولًا، بالنظر إلى توقع الحاسوب وعدد الأدلة معًا.</li>
+      <li><b>للتعلم:</b> يعرض خطوات تحليل بيانات حقيقية: فحص الجودة، ثم الإحصاء، ثم الرسم، ثم تفسير النتيجة بحذر.</li>
+      <li><b>لأي قارئ:</b> يعلّمنا عادة تفكير: لا نصدّق رقمًا واحدًا، ونسأل عمّا يسنده.</li>
+    </ul>
+
+    <h3 class="sub reveal">ثلاثة أشياء نتذكرها</h3>
+    <ul class="pts reveal">
+      <li>درجة النموذج الحاسوبي <b>لا تغني</b> عن الأدلة العلمية.</li>
+      <li>الاستنتاج من <b>عينة صغيرة</b> (عشرة جينات) يحتاج حذرًا، وقد يتغير بحذف جين واحد.</li>
+      <li>هذه نتائج <b>استكشافية</b>، وليست علاجًا ولا إثباتًا لفعالية أي جين.</li>
+    </ul>
+
+    <p class="big-line reveal">الحاسوب يقترح، والأدلة تشهد، والتجربة تحسم.<small>وهذا ما يفعله العلم: يبدأ بتوقع، ثم يبحث عن دليل، ثم يتحقق منه قبل أن يعتمد عليه.</small></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>مشروع لمى — المعلوماتية الحيوية</p>
+    <p>التحليل استكشافي ولأغراض تعليمية فقط، وليس نصيحة طبية ولا إثباتًا لفعالية أي هدف علاجي.</p>
+  </div>
+</footer>
+
+<script>
+document.body.classList.remove('no-js');
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== البيانات (الجدول السادس من دراسة OncoRTT) ===== */
+const TYPE_AR={'Text mining':'استخراج النصوص','RNA expression':'التعبير الجيني','Pathways':'المسارات الحيوية','Genetic association':'ارتباط جيني','Somatic mutations':'طفرات جسدية','Drugs':'أدوية','Linked to one cancer':'مرتبط بنوع سرطان واحد'};
+const G=[
+ {g:'EEF1A1',u:'P68104',s:0.9969,e:8, t:'Text mining'},
+ {g:'HP',    u:'P00738',s:0.9892,e:6, t:'Text mining, RNA expression'},
+ {g:'CHL1',  u:'O00533',s:0.9886,e:6, t:'Text mining, RNA expression'},
+ {g:'ADIPOQ',u:'Q15848',s:0.9866,e:74,t:'Text mining, RNA expression'},
+ {g:'MYLK4', u:'Q86YV6',s:0.9857,e:0, t:'Linked to one cancer'},
+ {g:'IGFBP5',u:'P24593',s:0.9801,e:5, t:'Text mining, RNA expression'},
+ {g:'ILK',   u:'Q13418',s:0.9785,e:13,t:'Text mining, Pathways'},
+ {g:'TFF1',  u:'P04155',s:0.9756,e:5, t:'Text mining, RNA expression, Genetic association'},
+ {g:'EPHB2', u:'P29323',s:0.9727,e:42,t:'Text mining, RNA expression, Somatic mutations, Drugs'},
+ {g:'EPHA7', u:'Q15375',s:0.9722,e:18,t:'Text mining, RNA expression, Somatic mutations, Drugs'}
+];
+const HI=['EEF1A1','ADIPOQ','MYLK4'];
+const NOTE={
+ EEF1A1:'أعلى درجة تنبؤ بين الجينات العشرة، لكن أدلته 8 فقط، ومن نوع واحد (استخراج النصوص).',
+ HP:'درجة عالية و6 أدلة.',CHL1:'درجة عالية و6 أدلة.',
+ ADIPOQ:'أكثر الجينات أدلة بفارق كبير (74)، ودرجته عالية أيضًا. هنا الحاسوب والأدلة متفقان.',
+ MYLK4:'درجة مرتفعة وعدد أدلة 0، أي لا ارتباط مسجّلًا بسرطان القولون. سجّله الجدول بعبارة «مرتبط بنوع سرطان واحد»، وتذكر الدراسة ارتباطه بسرطان الخلايا الحرشفية.',
+ IGFBP5:'درجة عالية و5 أدلة.',ILK:'13 دليلًا من نوعين: استخراج النصوص والمسارات الحيوية.',
+ TFF1:'5 أدلة من ثلاثة أنواع. ترتيبه متطابق تقريبًا في الاثنين.',
+ EPHB2:'ثاني أكثر الجينات أدلة (42)، وهو ثاني أقل درجة بين العشرة. أنواع أدلته أربعة، منها الطفرات والأدوية.',
+ EPHA7:'18 دليلًا بأربعة أنواع، وهو الأقل درجة بين العشرة.'
+};
+const f4=v=>v.toFixed(4);
+const badge=(t)=>t.split(',').map(x=>x.trim()).map(x=>`<span class="badge ${/Somatic|Drugs/.test(x)?'hot':''}">${TYPE_AR[x]||x}</span>`).join('');
+
+/* جدول البيانات */
+document.querySelector('#dataTable tbody').innerHTML=G.map((r,i)=>
+ `<tr><td class="n">${i+1}</td><td class="g">${r.g}</td><td class="n">${r.u}</td><td class="n">${f4(r.s)}</td><td class="n">${r.e}</td><td class="wrapc">${badge(r.t)}</td></tr>`).join('');
+
+/* الترتيبات */
+const byScore=[...G].sort((a,b)=>b.s-a.s);
+const byEv=[...G].sort((a,b)=>b.e-a.e||b.s-a.s);               // ترتيب عرض (كسر التعادل بالدرجة)
+const rankMin=(arr,key)=>g=>1+arr.filter(x=>x[key]>g[key]).length;  // ترتيب بالتعادل (min)
+G.forEach(g=>{g.rs=rankMin(G,'s')(g);g.re=rankMin(G,'e')(g);g.gap=g.rs-g.re;});
+document.querySelector('#rankTable tbody').innerHTML=byScore.map(g=>
+ `<tr class="${HI.includes(g.g)?'hl':''}"><td class="g">${g.g}</td><td class="n">${g.rs}</td><td class="n">${g.re}</td><td class="n">${g.gap>0?'+'+g.gap:g.gap}</td></tr>`).join('');
+
+/* أعمدة الأدلة */
+const barsEl=document.getElementById('bars'),detail=document.getElementById('detail');
+[...G].sort((a,b)=>b.e-a.e).forEach(g=>{
+ const b=document.createElement('button');b.className='row'+(HI.includes(g.g)?' hl':'');
+ b.innerHTML=`<span class="lbl g">${g.g}</span><span class="track"><span class="fill" data-w="${(g.e/74*100).toFixed(1)}"></span></span><span class="val n">${g.e}</span>`;
+ b.addEventListener('click',()=>{document.querySelectorAll('.row').forEach(r=>r.classList.remove('on'));b.classList.add('on');
+  detail.innerHTML=`<b class="g">${g.g}</b> · <span class="n">${g.u}</span><br>درجة التنبؤ: <b class="n">${f4(g.s)}</b> · عدد الأدلة: <b class="n">${g.e}</b><br>${NOTE[g.g]}`;});
+ barsEl.appendChild(b);
+});
+new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.fill').forEach((f,i)=>setTimeout(()=>f.style.width=f.dataset.w+'%',i*90));o.disconnect()}})},{threshold:.2}).observe(barsEl);
+
+/* ===== رسم التشتت ===== */
+(function(){
+ const svg=document.getElementById('scatter');const L=56,R=462,T=24,B=312,x0=.970,x1=.999,y0=0,y1=80;
+ const X=v=>L+(v-x0)/(x1-x0)*(R-L),Y=v=>B-(v-y0)/(y1-y0)*(B-T);let h='';
+ [0,20,40,60,80].forEach(v=>{h+=`<line x1="${L}" x2="${R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#8992BD" stroke-opacity=".25"/><text x="${L-10}" y="${Y(v)+5}" text-anchor="end" font-size="15" fill="#4A5688">${v}</text>`});
+ [.975,.980,.985,.990,.995].forEach(v=>{h+=`<text x="${X(v)}" y="${B+26}" text-anchor="middle" font-size="15" fill="#4A5688">${v.toFixed(3)}</text>`});
+ h+=`<text x="${(L+R)/2}" y="${B+58}" text-anchor="middle" font-size="17" fill="#2A2F5C" font-weight="600">درجة تنبؤ الحاسوب</text>`;
+ h+=`<text transform="translate(12 ${(T+B)/2}) rotate(-90)" text-anchor="middle" font-size="17" fill="#2A2F5C" font-weight="600">عدد الأدلة</text>`;
+ const off={EEF1A1:[0,-16,'end'],HP:[8,-16,'start'],CHL1:[0,28,'middle'],ADIPOQ:[16,5,'start'],MYLK4:[0,-16,'middle'],IGFBP5:[0,28,'middle'],ILK:[0,-16,'middle'],TFF1:[0,-16,'middle'],EPHB2:[14,5,'start'],EPHA7:[14,5,'start']};
+ G.forEach(g=>{const c=HI.includes(g.g)?(g.g==='MYLK4'?'#C4665A':g.g==='EEF1A1'?'#DC897B':'#5B6CA4'):'#8992BD';const cx=X(g.s),cy=Y(g.e),o=off[g.g];
+  h+=`<circle cx="${cx}" cy="${cy}" r="14" fill="${c}" fill-opacity=".2"/><circle cx="${cx}" cy="${cy}" r="7.5" fill="${c}"/>`;
+  h+=`<text x="${cx+o[0]}" y="${cy+o[1]}" text-anchor="${o[2]}" font-size="14" font-weight="700" fill="#3A4575" direction="ltr">${g.g}</text>`});
+ svg.innerHTML=h;
+})();
+
+/* ===== حذف جين في كل مرة ===== */
+(function(){
+ const svg=document.getElementById('loo');
+ const corr=(a,b)=>{const n=a.length,ma=a.reduce((x,y)=>x+y)/n,mb=b.reduce((x,y)=>x+y)/n;let sab=0,saa=0,sbb=0;for(let i=0;i<n;i++){sab+=(a[i]-ma)*(b[i]-mb);saa+=(a[i]-ma)**2;sbb+=(b[i]-mb)**2}return sab/Math.sqrt(saa*sbb)};
+ const base=corr(G.map(g=>g.s),G.map(g=>g.e));
+ const rows=G.map(g=>{const r=G.filter(x=>x!==g);return{g:g.g,r:corr(r.map(x=>x.s),r.map(x=>x.e))}}).sort((a,b)=>a.r-b.r);
+ const L=70,R=450,min=-.65,max=.15,X=v=>L+(v-min)/(max-min)*(R-L),rh=32,T=20;let h='';
+ [-.6,-.4,-.2,0].forEach(v=>{h+=`<line x1="${X(v)}" x2="${X(v)}" y1="${T-6}" y2="${T+rows.length*rh}" stroke="#8992BD" stroke-opacity="${v===0?.7:.25}"/><text x="${X(v)}" y="${T+rows.length*rh+22}" text-anchor="middle" font-size="14" fill="#4A5688">${v.toFixed(1)}</text>`});
+ rows.forEach((d,i)=>{const y=T+i*rh,x0=X(0),x1=X(d.r),c=d.r<base?'#5B6CA4':'#DC897B';
+  h+=`<rect x="${Math.min(x0,x1)}" y="${y+5}" width="${Math.abs(x1-x0)}" height="${rh-12}" rx="8" fill="${c}"/>`;
+  h+=`<text x="${L-10}" y="${y+rh/2+5}" text-anchor="end" font-size="14" font-weight="700" fill="#3A4575" direction="ltr">${d.g}</text>`;
+  const tx=d.r<0?x1-8:x1+8;h+=`<text x="${tx}" y="${y+rh/2+5}" text-anchor="${d.r<0?'end':'start'}" font-size="13" fill="#2A2F5C" direction="ltr">${(d.r>0?'+':'−')+Math.abs(d.r).toFixed(3)}</text>`});
+ h+=`<line x1="${X(base)}" x2="${X(base)}" y1="${T-6}" y2="${T+rows.length*rh}" stroke="#2A2F5C" stroke-width="2" stroke-dasharray="5 4"/>`;
+ svg.innerHTML=h;
+})();
+
+/* ===== مخطط الترتيب ===== */
+(function(){
+ const svg=document.getElementById('slope');const xr=330,xl=150,T=44,rh=40;let h='';
+ h+=`<text x="${xr+40}" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#2A2F5C">حسب درجة الحاسوب</text><text x="${xl-40}" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#2A2F5C">حسب الأدلة</text>`;
+ byScore.forEach((g,i)=>{g.ys=T+i*rh});byEv.forEach((g,i)=>{g.ye=T+i*rh});
+ G.forEach(g=>{const up=g.re<g.rs,same=g.re===g.rs;const c=same?'#9aa0c4':up?'#5B6CA4':'#DC897B';
+  h+=`<line x1="${xr}" y1="${g.ys}" x2="${xl}" y2="${g.ye}" stroke="${c}" stroke-width="${HI.includes(g.g)?5:3}" stroke-linecap="round" stroke-opacity="${HI.includes(g.g)?1:.7}"/>`});
+ byScore.forEach((g,i)=>{h+=`<circle cx="${xr}" cy="${g.ys}" r="6" fill="#2A2F5C"/><text x="${xr+16}" y="${g.ys+5}" text-anchor="start" font-size="14" font-weight="700" fill="#3A4575" direction="ltr">${g.g}</text><text x="${xr+98}" y="${g.ys+5}" text-anchor="start" font-size="13" fill="#4A5688">${i+1}</text>`});
+ byEv.forEach((g,i)=>{h+=`<circle cx="${xl}" cy="${g.ye}" r="6" fill="#2A2F5C"/><text x="${xl-16-9.2*g.g.length}" y="${g.ye+5}" text-anchor="start" font-size="14" font-weight="700" fill="#3A4575" direction="ltr">${g.g}</text><text x="14" y="${g.ye+5}" text-anchor="start" font-size="13" fill="#4A5688">${i+1}</text>`});
+ svg.innerHTML=h;
+})();
+
+/* نسخ الكود */
+document.getElementById('copyBtn').addEventListener('click',function(){
+ const t=document.getElementById('code').textContent;
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{this.textContent='تم النسخ'}).catch(()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('code'));const s=getSelection();s.removeAllRanges();s.addRange(r);this.textContent='حدّد الكود وانسخه'});
+ setTimeout(()=>this.textContent='نسخ الكود',2200);
+});
+</script>
+</body>
+</html>
